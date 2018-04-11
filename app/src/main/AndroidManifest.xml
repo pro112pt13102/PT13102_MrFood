@@ -23,11 +23,6 @@
         <activity android:name=".SanPhamActivity" />
         <activity android:name=".GioiThieuActivity" />
         <activity android:name=".LienHeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -36,7 +31,13 @@
 
         <activity android:name=".Service.MuaNgayActivity" />
         <activity android:name=".MuaNgayActivity" />
-        <activity android:name=".LoadingScreenActivity"></activity>
+        <activity android:name=".LoadingScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MapActivity"></activity>
     </application>
 

@@ -180,12 +180,6 @@ public class TrangChuActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.monchinh:
                         Intent i1 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
-						
-						// Thêm Toast DUCNGUYEN
-						Toast.makeText(getApplicationContext(), "Món Ăn Chính Nè", Toast.LENGTH_LONG).show();
-						//END TOAST
-						
-						
                         i1.putExtra("LOAI","Món chính");
                         startActivity(i1);
                         break;
@@ -217,7 +211,10 @@ public class TrangChuActivity extends AppCompatActivity {
                     case R.id.thoat:
                         System.exit(0);
                         break;
-
+                    case R.id.lienhe:
+                        Intent i7 = new Intent(TrangChuActivity.this,LienHeActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return false;
             }

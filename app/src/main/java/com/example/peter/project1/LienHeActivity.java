@@ -6,11 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class LienHeActivity extends AppCompatActivity {
 
     Button btn_map1, btn_map2, btn_map3, btn_map4, btn_map5, btn_call1, btn_call2, btn_call3, btn_call4, btn_call5;
-
+    ImageButton img_btn_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,14 @@ public class LienHeActivity extends AppCompatActivity {
         btn_call3=findViewById(R.id.button_call3);
         btn_call4=findViewById(R.id.button_call4);
         btn_call5=findViewById(R.id.button_call5);
+        img_btn_back=findViewById(R.id.img_btn_back);
+
+        img_btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_map1.setOnClickListener(new View.OnClickListener() {
             @Override
