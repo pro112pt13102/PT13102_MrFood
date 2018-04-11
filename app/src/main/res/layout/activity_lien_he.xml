@@ -64,150 +64,160 @@
 
     </android.support.constraint.ConstraintLayout>
 
-<ScrollView
-    android:id="@+id/scrollView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chi Nhánh 1 :"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/sizexemthem"
-            android:textColor="@color/maunen"/>
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="391A Nam Kỳ Khởi Nghĩa P.7 Q.3"
-            android:drawableLeft="@drawable/ic_action_name"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi Nhánh 1 :"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/sizexemthem"
+                android:textColor="@color/maunen"/>
+            <Button
+                android:id="@+id/button_map1"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="391A Nam Kỳ Khởi Nghĩa P.7 Q.3"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="01204825860"
-            android:drawableLeft="@drawable/ic_call"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <Button
+                android:id="@+id/button_call1"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="01204825860"
+                android:drawableLeft="@drawable/ic_call"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi Nhánh 2 :"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/sizexemthem"
-            android:textColor="@color/maunen"/>
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="278 Nam Kỳ Khởi Nghĩa P.7 Q.3"
-            android:drawableLeft="@drawable/ic_action_name"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi Nhánh 2 :"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/sizexemthem"
+                android:textColor="@color/maunen"/>
+            <Button
+                android:id="@+id/button_map2"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="278 Nam Kỳ Khởi Nghĩa P.7 Q.3"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="01228088593"
-            android:drawableLeft="@drawable/ic_call"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <Button
+                android:id="@+id/button_call2"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="01228088593"
+                android:drawableLeft="@drawable/ic_call"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi Nhánh 3 :"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/sizexemthem"
-            android:textColor="@color/maunen"/>
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="865/19/11 Hoàng Sa P.9 Q.3"
-            android:drawableLeft="@drawable/ic_action_name"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi Nhánh 3 :"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/sizexemthem"
+                android:textColor="@color/maunen"/>
+            <Button
+                android:id="@+id/button_map3"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="865/19/11 Hoàng Sa P.9 Q.3"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="0903484902"
-            android:drawableLeft="@drawable/ic_call"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <Button
+                android:id="@+id/button_call3"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="0903484902"
+                android:drawableLeft="@drawable/ic_call"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi Nhánh 4 :"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/sizexemthem"
-            android:textColor="@color/maunen"/>
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="12b CMT8 P.Bến Thành Q.1"
-            android:drawableLeft="@drawable/ic_action_name"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi Nhánh 4 :"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/sizexemthem"
+                android:textColor="@color/maunen"/>
+            <Button
+                android:id="@+id/button_map4"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="12b CMT8 P.Bến Thành Q.1"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="028 3829 1292"
-            android:drawableLeft="@drawable/ic_call"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <Button
+                android:id="@+id/button_call4"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="028 3829 1292"
+                android:drawableLeft="@drawable/ic_call"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi Nhánh 5 :"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/sizexemthem"
-            android:textColor="@color/maunen"/>
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="318/28 Lưu Hữu Phước P.15 Q.8"
-            android:drawableLeft="@drawable/ic_action_name"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi Nhánh 5 :"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/sizexemthem"
+                android:textColor="@color/maunen"/>
+            <Button
+                android:id="@+id/button_map5"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="318/28 Lưu Hữu Phước P.15 Q.8"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <Button
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="01205558789"
-            android:drawableLeft="@drawable/ic_call"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_call5"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="01205558789"
+                android:drawableLeft="@drawable/ic_call"
+                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+        </LinearLayout>
 
 
-</ScrollView>
+    </ScrollView>
 </LinearLayout>
