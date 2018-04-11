@@ -11,19 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter.project1.Adapter.AdapterSlideShow;
 import com.example.peter.project1.Adapter.adapter_rc_horizontalview;
-import com.example.peter.project1.Fragment.SlideshowFragment;
 import com.example.peter.project1.Model.SanPham;
 
 import java.util.ArrayList;
@@ -31,7 +27,7 @@ import java.util.ArrayList;
 import me.relex.circleindicator.CircleIndicator;
 
 
-public class MainActivity extends AppCompatActivity {
+public class TrangChuActivity extends AppCompatActivity {
     ViewPager viewPager_slideshow;
     ImageButton imgb;
     DrawerLayout dw;
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         tv_xemtatca_mon_chinh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,SanPhamActivity.class);
+                Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Món chính");
                 startActivity(i);
             }
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         tv_xemtatca_mon_vat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,SanPhamActivity.class);
+                Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Món Ăn Vặt");
                 startActivity(i);
             }
@@ -82,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         tv_xemtatca_thuc_uong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,SanPhamActivity.class);
+                Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Thức uống");
                 startActivity(i);
             }
@@ -148,18 +144,18 @@ public class MainActivity extends AppCompatActivity {
     }
     public void setUphorizontalView(){
         //rc Mon Chinh
-        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListMonChinh,MainActivity.this);
+        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListMonChinh,TrangChuActivity.this);
         LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rc_MonChinh.setLayoutManager(layoutManager);
         rc_MonChinh.setAdapter(adapterMonChinh);
         // rc Mon an Vat
         LinearLayoutManager layoutManager1= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        adapter_rc_horizontalview adapterAnVat = new adapter_rc_horizontalview(arrayListMonAnVat,MainActivity.this);
+        adapter_rc_horizontalview adapterAnVat = new adapter_rc_horizontalview(arrayListMonAnVat,TrangChuActivity.this);
         rc_Mon_Vat.setLayoutManager(layoutManager1);
         rc_Mon_Vat.setAdapter(adapterAnVat);
         // rc Thuc uong
         LinearLayoutManager layoutManager2= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        adapter_rc_horizontalview adapterThucUong = new adapter_rc_horizontalview(arrayListThucUong,MainActivity.this);
+        adapter_rc_horizontalview adapterThucUong = new adapter_rc_horizontalview(arrayListThucUong,TrangChuActivity.this);
         rc_Thuc_uong.setLayoutManager(layoutManager2);
         rc_Thuc_uong.setAdapter(adapterThucUong);
 
@@ -183,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.monchinh:
-                        Intent i1 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i1 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
 						
 						// Thêm Toast DUCNGUYEN
 						Toast.makeText(getApplicationContext(), "Món Ăn Chính Nè", Toast.LENGTH_LONG).show();
@@ -194,27 +190,27 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(i1);
                         break;
                     case R.id.monanvat:
-                        Intent i2 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i2 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i2.putExtra("LOAI","Món Ăn Vặt");
                         startActivity(i2);
                         break;
                     case R.id.trasua:
-                        Intent i3 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i3 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i3.putExtra("LOAI","Trà Sữa");
                         startActivity(i3);
                         break;
                     case R.id.cafe:
-                        Intent i4 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i4 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i4.putExtra("LOAI","Cafe");
                         startActivity(i4);
                         break;
                     case R.id.khac:
-                        Intent i5 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i5 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i5.putExtra("LOAI","Khác");
                         startActivity(i5);
                         break;
                     case R.id.comvanphong:
-                        Intent i6 = new Intent(MainActivity.this,SanPhamActivity.class);
+                        Intent i6 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i6.putExtra("LOAI","Khác");
                         startActivity(i6);
                         break;

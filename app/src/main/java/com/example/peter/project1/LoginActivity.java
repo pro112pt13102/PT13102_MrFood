@@ -3,10 +3,8 @@ package com.example.peter.project1;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -26,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         tv_boqua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                Intent i = new Intent(LoginActivity.this,TrangChuActivity.class);
                 startActivity(i);
            }
         });
