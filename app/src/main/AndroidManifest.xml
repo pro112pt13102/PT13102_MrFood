@@ -9,12 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".TrangChuActivity">
         </activity>
         <activity android:name=".ChiTietActivity" />
         <activity android:name=".GioHangActivity" />
@@ -22,16 +17,21 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SanPhamActivity" />
         <activity android:name=".GioiThieuActivity" />
-        <activity android:name=".LienHeActivity" >
-
-        </activity>
+        <activity android:name=".LienHeActivity"></activity>
 
         <service
             android:name=".Service.OnClearFromRecentService"
             android:stopWithTask="false" />
 
         <activity android:name=".Service.MuaNgayActivity" />
-        <activity android:name=".MuaNgayActivity"></activity>
+        <activity android:name=".MuaNgayActivity" />
+        <activity android:name=".LoadingScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
