@@ -39,6 +39,7 @@ public class GioHangActivity extends AppCompatActivity {
     static TextView tv_giasp_giohang;
     static int positionItem;
     adapter_rc_gio_hang adapter_rc_gio_hang;
+    String url ="http://immense-scrubland-98497.herokuapp.com/public/images/28.jpg";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,12 @@ public class GioHangActivity extends AppCompatActivity {
         img_btn_back_gio_hang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // update 4/12/2018
+                if(arrayList_giohang.size()!=0){
+                    updateSoluong( getEditSoluong());
+                    tinhtong();
+                }
+                //
                 updateDataToSever();
                 sendBackArrayGioHangEditSanPhamActivity();
             }
@@ -103,7 +110,7 @@ public class GioHangActivity extends AppCompatActivity {
 
     public void setData() {
         for (int i = 0; i < 20; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan,1,i+1);
+            SanPham sp = new SanPham("sp" + i, 5 + i * 10, url,1,i+1);
             arrayList_giohang.add(sp);
         }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,8 @@ public class adapter_rc_fragment_hoan_tat extends RecyclerView.Adapter<adapter_r
     @Override
     public void onBindViewHolder(View1SanPham holder, int position) {
         SanPham sp=arrayList.get(position);
-        holder.img_hinh_sp.setImageResource(sp.getHinh());
+//        holder.img_hinh_sp.setImageResource(sp.getHinh());
+        loadhinh(holder.img_hinh_sp,arrayList.get(position).getHinh());
         holder.txt_gia_sp.setText(sp.getDongia()+"");
         holder.txt_soluong_sp.setText(sp.getSoluong()+"");
         holder.txt_ten_sp.setText(sp.getTenSanPha());
@@ -57,5 +59,12 @@ public class adapter_rc_fragment_hoan_tat extends RecyclerView.Adapter<adapter_r
             txt_gia_sp=itemView.findViewById(R.id.tv_dongiasp_hoantat);
             txt_soluong_sp=itemView.findViewById(R.id.tv_soluong_hoantat);
         }
+    }
+    public void loadhinh(ImageView img ,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(200,200)
+                .into(img);
     }
 }

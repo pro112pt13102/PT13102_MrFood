@@ -1,6 +1,8 @@
 package com.example.peter.project1;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,9 +21,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.peter.project1.Adapter.AdapterSlideShow;
 import com.example.peter.project1.Adapter.adapter_rc_horizontalview;
 import com.example.peter.project1.Model.SanPham;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,7 +46,6 @@ public class TrangChuActivity extends AppCompatActivity {
     DrawerLayout dw;
     NavigationView navigationView;
     TextView tv_xemtatca_mon_chinh,tv_xemtatca_mon_vat,tv_xemtatca_thuc_uong;
-    ImageView  imgV_sp;
     RecyclerView rc_MonChinh,rc_Mon_Vat,rc_Thuc_uong;
     CircleIndicator circleIndicator;
     ArrayList<SanPham> arrayListSanPhamSlideShow;
@@ -45,11 +57,9 @@ public class TrangChuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trangchu);
         AnhXa();
-       //load data
-        Thread threadData = new ThreadData();
-        threadData.start();
-        setUphorizontalView();
-        setUpCircleIndicator();
+       //get DAta from loading Screen
+        getData();
+        setUpAdapter();
         imgb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +72,7 @@ public class TrangChuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Món chính");
+                i.putExtra("DsMonChinh",arrayListMonChinh);
                 startActivity(i);
             }
         });
@@ -71,6 +82,7 @@ public class TrangChuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Món Ăn Vặt");
+                i.putExtra("DsMonVat",arrayListMonAnVat);
                 startActivity(i);
             }
         });
@@ -80,12 +92,12 @@ public class TrangChuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                 i.putExtra("LOAI","Thức uống");
+                i.putExtra("DsThucUong",arrayListThucUong);
                 startActivity(i);
             }
         });
         //Onclick Menu navigation
         onClicMenu();
-
     }
     public void AnhXa(){
         navigationView=findViewById(R.id.nav_view);
@@ -104,75 +116,18 @@ public class TrangChuActivity extends AppCompatActivity {
         viewPager_slideshow=findViewById(R.id.vp_slideshow);
         circleIndicator=findViewById(R.id.indicator_default);
     }
-    public void getDataarrayListMonChinh(){
-        for (int i = 0; i < 10; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, 1);
-            arrayListMonChinh.add(sp);
-        }
-    }
-    public void getDataarrayListMonAnVat(){
-        for (int i = 0; i < 10; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, 2);
-            arrayListMonAnVat.add(sp);
-        }
-    }
-    public void getDataarrayListThucUong(){
-        for (int i = 0; i < 10; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, 3);
-            arrayListThucUong.add(sp);
-        }
-
+    public void getData(){
+        arrayListMonChinh= (ArrayList<SanPham>) getIntent().getSerializableExtra("MonChinh");
+        arrayListMonAnVat= (ArrayList<SanPham>) getIntent().getSerializableExtra("MonVat");
+        arrayListThucUong= (ArrayList<SanPham>) getIntent().getSerializableExtra("ThucUong");
+        arrayListSanPhamSlideShow= (ArrayList<SanPham>) getIntent().getSerializableExtra("SlideShow");
     }
     public void setUpCircleIndicator(){
-        FragmentPagerAdapter adapter= new AdapterSlideShow(getSupportFragmentManager(),arrayListSanPhamSlideShow);
-        viewPager_slideshow.setAdapter(adapter);
-        circleIndicator.setViewPager(viewPager_slideshow);
-
-
-    }
-
-    public void setDataarrayListSanPhamSlideShow(){
-        for(int i=0;i<2;i++){
-            arrayListSanPhamSlideShow.add(arrayListMonChinh.get(i));
-        }
-        for(int i=2;i<4;i++){
-            arrayListSanPhamSlideShow.add(arrayListMonAnVat.get(i));
-        }
-        for(int i=4;i<6;i++){
-            arrayListSanPhamSlideShow.add(arrayListThucUong.get(i));
-        }
-    }
-    public void setUphorizontalView(){
-        //rc Mon Chinh
-        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListMonChinh,TrangChuActivity.this);
-        LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rc_MonChinh.setLayoutManager(layoutManager);
-        rc_MonChinh.setAdapter(adapterMonChinh);
-        // rc Mon an Vat
-        LinearLayoutManager layoutManager1= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        adapter_rc_horizontalview adapterAnVat = new adapter_rc_horizontalview(arrayListMonAnVat,TrangChuActivity.this);
-        rc_Mon_Vat.setLayoutManager(layoutManager1);
-        rc_Mon_Vat.setAdapter(adapterAnVat);
-        // rc Thuc uong
-        LinearLayoutManager layoutManager2= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        adapter_rc_horizontalview adapterThucUong = new adapter_rc_horizontalview(arrayListThucUong,TrangChuActivity.this);
-        rc_Thuc_uong.setLayoutManager(layoutManager2);
-        rc_Thuc_uong.setAdapter(adapterThucUong);
-
+            FragmentPagerAdapter adapter= new AdapterSlideShow(getSupportFragmentManager(),arrayListSanPhamSlideShow);
+            viewPager_slideshow.setAdapter(adapter);
+            circleIndicator.setViewPager(viewPager_slideshow);
 
     }
-    public class ThreadData extends Thread{
-        @Override
-        public void run() {
-            super.run();
-            getDataarrayListMonAnVat();
-            getDataarrayListMonChinh();
-            getDataarrayListThucUong();
-            setDataarrayListSanPhamSlideShow();
-        }
-    }
-
-
     public void onClicMenu(){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -220,6 +175,28 @@ public class TrangChuActivity extends AppCompatActivity {
             }
         });
     }
-
-
+    public void setUpRcMonChinh(){
+        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListMonChinh,TrangChuActivity.this);
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rc_MonChinh.setLayoutManager(layoutManager);
+        rc_MonChinh.setAdapter(adapterMonChinh);
+    }
+    public void setUpRcMonVat(){
+        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListMonAnVat,TrangChuActivity.this);
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rc_Mon_Vat.setLayoutManager(layoutManager);
+        rc_Mon_Vat.setAdapter(adapterMonChinh);
+    }
+    public void setUpRcThucUong(){
+        adapter_rc_horizontalview adapterMonChinh = new adapter_rc_horizontalview(arrayListThucUong,TrangChuActivity.this);
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rc_Thuc_uong.setLayoutManager(layoutManager);
+        rc_Thuc_uong.setAdapter(adapterMonChinh);
+    }
+    public void setUpAdapter(){
+        setUpRcMonChinh();
+        setUpRcMonVat();
+        setUpRcThucUong();
+        setUpCircleIndicator();
+    }
 }

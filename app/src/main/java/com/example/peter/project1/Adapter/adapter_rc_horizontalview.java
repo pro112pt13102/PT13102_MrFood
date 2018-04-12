@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.peter.project1.ChiTietActivity;
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class adapter_rc_horizontalview extends RecyclerView.Adapter<adapter_rc_h
 
     @Override
     public void onBindViewHolder(View10 holder, final int position) {
-        holder.imgV_hinhsp.setImageResource(arrayList.get(position).getHinh());
+        loadhinh(holder.imgV_hinhsp,arrayList.get(position).getHinh());
         holder.imgV_hinhsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,5 +68,13 @@ public class adapter_rc_horizontalview extends RecyclerView.Adapter<adapter_rc_h
             tv_tensp=itemView.findViewById(R.id.tv_tensp);
             tv_giasp=itemView.findViewById(R.id.tv_giasp);
         }
+    }
+    public void loadhinh(ImageView img,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(200,200)
+                .into(img);
+
     }
 }

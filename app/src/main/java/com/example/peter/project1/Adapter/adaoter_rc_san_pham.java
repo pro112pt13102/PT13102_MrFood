@@ -18,6 +18,7 @@ import com.example.peter.project1.Interface.ILoadMore;
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
 import com.eyalbira.loadingdots.LoadingDots;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -118,10 +119,12 @@ public class adaoter_rc_san_pham extends RecyclerView.Adapter<RecyclerView.ViewH
              sp = arrayList.get(position);
             final String tenSp =sp.getTenSanPha();
              int giaSp=sp.getDongia();
-             int hinhSp=sp.getHinh();
+             String hinhSp=sp.getHinh();
             ((ItemViewHolder) holder).txt_gia.setText(giaSp+"");
             ((ItemViewHolder) holder).txt_ten.setText(tenSp);
-            ((ItemViewHolder) holder).img.setImageResource(R.drawable.garan);
+            //load hinh
+//            ((ItemViewHolder) holder).img.setImageResource(R.drawable.garan);
+            loadhinh(((ItemViewHolder) holder).img,arrayList.get(position).getHinh());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,5 +155,12 @@ public class adaoter_rc_san_pham extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setLoaded() {
         isLoading = false;
+    }
+    public void loadhinh(ImageView img ,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(200,200)
+                .into(img);
     }
 }

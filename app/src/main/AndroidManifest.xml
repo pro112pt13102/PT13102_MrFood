@@ -15,7 +15,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_GGmap_Key"/>
-        <activity android:name=".TrangChuActivity"></activity>
+        <activity android:name=".TrangChuActivity">
+        </activity>
         <activity android:name=".ChiTietActivity" />
         <activity android:name=".GioHangActivity" />
         <activity android:name=".ThongTinActivity" />

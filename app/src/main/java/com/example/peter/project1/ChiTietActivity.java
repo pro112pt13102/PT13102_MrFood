@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter.project1.Model.SanPham;
+import com.squareup.picasso.Picasso;
 
 import es.dmoral.toasty.Toasty;
 
@@ -43,7 +44,8 @@ public class ChiTietActivity extends AppCompatActivity {
         sp= (SanPham) getIntent().getSerializableExtra("SanPham");
         giaSp.setText(sp.getDongia()+"");
         tenSp.setText(sp.getTenSanPha());
-        imgHinhSp.setImageResource(sp.getHinh());
+//        imgHinhSp.setImageResource(sp.getHinh());
+        loadhinh(imgHinhSp,sp.getHinh());
     }
     public  void Anhxa(){
         img_giohang_chi_tiet=findViewById(R.id.img_giohang_chi_tiet);
@@ -93,5 +95,12 @@ public class ChiTietActivity extends AppCompatActivity {
                 .setSuccessColor(Color.parseColor("#FFF11616"))
                 .apply();
         Toasty.success(ChiTietActivity.this,"Đã thêm vào giỏ hàng").show();
+    }
+    public void loadhinh(ImageView img ,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(200,200)
+                .into(img);
     }
 }

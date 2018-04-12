@@ -14,13 +14,14 @@ import android.widget.ImageView;
 import com.example.peter.project1.ChiTietActivity;
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SlideshowFragment extends android.support.v4.app.Fragment {
     View v;
-    View view_slideshow;
+    ImageView view_slideshow;
     SanPham sanPham;
 
     public static SlideshowFragment newInstance(SanPham sp) {
@@ -52,7 +53,7 @@ public class SlideshowFragment extends android.support.v4.app.Fragment {
         view_slideshow=v.findViewById(R.id.view_slide_show);
     }
     public void SetData(){
-        view_slideshow.setBackgroundResource(sanPham.getHinh());
+        loadhinh(view_slideshow,sanPham.getHinh());
     }
     public void onClick(){
         view_slideshow.setOnClickListener(new View.OnClickListener() {
@@ -65,5 +66,11 @@ public class SlideshowFragment extends android.support.v4.app.Fragment {
             }
         });
     }
-
+    public void loadhinh(ImageView img ,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(600,400)
+                .into(img);
+    }
 }

@@ -23,6 +23,7 @@ import com.example.peter.project1.ChiTietActivity;
 import com.example.peter.project1.GioHangActivity;
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
+import com.squareup.picasso.Picasso;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -63,14 +64,15 @@ public class adapter_rc_gio_hang extends RecyclerView.Adapter<adapter_rc_gio_han
     public void onBindViewHolder(final View1SanPham holder, final int position) {
         final String tenSp =arrayList.get(position).getTenSanPha();
         final int giaSp=arrayList.get(position).getDongia();
-        final int hinhSp=arrayList.get(position).getHinh();
+        final String hinhSp=arrayList.get(position).getHinh();
         final int soluong=arrayList.get(position).getSoluong();
         final int MaSp=arrayList.get(position).getMaSP();
         final SanPham sp = new SanPham(tenSp,giaSp,hinhSp,soluong,MaSp);
         holder.et_soluong_giohang.setText(soluong+"");
         holder.tv_giasp_giohang.setText(giaSp+"");
         holder.tv_tensp_giohang.setText(tenSp);
-        holder.img_hinhsp_giohang.setImageResource(hinhSp);
+//        holder.img_hinhsp_giohang.setImageResource(hinhSp);
+        loadhinh(holder.img_hinhsp_giohang,hinhSp);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,5 +146,11 @@ public class adapter_rc_gio_hang extends RecyclerView.Adapter<adapter_rc_gio_han
     public static String getEditSoluong(){
         return chuoiEdit;
     }
-
+    public void loadhinh(ImageView img ,String hinh){
+        Picasso.get()
+                .load("http://immense-scrubland-98497.herokuapp.com/public/images/"+hinh)
+                .centerCrop()
+                .resize(200,200)
+                .into(img);
+    }
 }

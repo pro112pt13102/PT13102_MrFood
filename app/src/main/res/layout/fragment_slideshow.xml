@@ -6,8 +6,7 @@
     tools:context="com.example.peter.project1.Fragment.SlideshowFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <View
-        android:background="@drawable/garan"
+    <ImageView
         android:id="@+id/view_slide_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

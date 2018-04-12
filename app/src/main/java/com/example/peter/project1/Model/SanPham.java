@@ -9,9 +9,38 @@ import java.io.Serializable;
 public class SanPham implements Serializable{
     private String tenSanPha;
     private int dongia;
-    private int hinh;
+    private String hinh;
     private int soluong;
     private int MaSP;
+    private int MaDm;
+    private String Gioithieu;
+
+    public void setMaDm(int maDm) {
+        MaDm = maDm;
+    }
+
+    public void setGioithieu(String gioithieu) {
+        Gioithieu = gioithieu;
+    }
+
+    public int getMaDm() {
+
+        return MaDm;
+    }
+
+    public String getGioithieu() {
+        return Gioithieu;
+    }
+
+    public SanPham(String tenSanPha, int dongia, String hinh, int soluong, int maSP, int maDm, String gioithieu) {
+        this.tenSanPha = tenSanPha;
+        this.dongia = dongia;
+        this.hinh = hinh;
+        this.soluong = soluong;
+        MaSP = maSP;
+        MaDm = maDm;
+        Gioithieu = gioithieu;
+    }
 
     public int getSoluong() {
         return soluong;
@@ -31,7 +60,7 @@ public class SanPham implements Serializable{
         this.soluong = soluong;
     }
 
-    public SanPham(String tenSanPha, int dongia, int hinh, int soluong,int MaSP) {
+    public SanPham(String tenSanPha, int dongia, String hinh, int soluong,int MaSP) {
         this.tenSanPha = tenSanPha;
         this.dongia = dongia;
         this.hinh = hinh;
@@ -39,7 +68,7 @@ public class SanPham implements Serializable{
         this.MaSP=MaSP;
     }
 
-    public SanPham(String tenSanPha, int dongia, int hinh) {
+    public SanPham(String tenSanPha, int dongia, String hinh) {
         this.tenSanPha = tenSanPha;
         this.dongia = dongia;
         this.hinh = hinh;
@@ -56,7 +85,7 @@ public class SanPham implements Serializable{
         return dongia;
     }
 
-    public int getHinh() {
+    public String getHinh() {
         return hinh;
     }
 
@@ -68,7 +97,7 @@ public class SanPham implements Serializable{
         this.dongia = dongia;
     }
 
-    public void setHinh(int hinh) {
+    public void setHinh(String hinh) {
         this.hinh = hinh;
     }
 }

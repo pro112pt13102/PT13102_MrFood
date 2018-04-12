@@ -20,15 +20,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.peter.project1.Adapter.adaoter_rc_san_pham;
 import com.example.peter.project1.CustomView.Badge;
 import com.example.peter.project1.Interface.ILoadMore;
 import com.example.peter.project1.Model.SanPham;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-
-
+import java.util.Collections;
 
 
 public class SanPhamActivity extends AppCompatActivity {
@@ -41,12 +50,18 @@ public class SanPhamActivity extends AppCompatActivity {
     PullRefreshLayout swipe_refresh_layout;
     static ArrayList<SanPham> arrayList_giohang;
     TextView txt_loai;
+    String url ="http://immense-scrubland-98497.herokuapp.com/public/images/28.jpg";
+    String title;
+    int maSPCuoi;
+    int maSpDau;
+    int sizeOfArrayrespone=1;
+    ArrayList<SanPham> arrayResponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_san_pham);
         Anhxa();
-        loadSanPhamFromsever();
+        getDataSanPham();
         loadGioHangFromsever();
         setNumberBadge(CountSizeArray(arrayList_giohang));
 
@@ -83,21 +98,36 @@ public class SanPhamActivity extends AppCompatActivity {
 
     public void Anhxa() {
         txt_loai=findViewById(R.id.txt_loai);
-        // Set Title
-        txt_loai.setText(getIntent().getStringExtra("LOAI"));
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         arrayListSanPham = new ArrayList<>();
+        arrayResponse = new ArrayList<>();
         img_btn_giohang = findViewById(R.id.img_btn_giohang);
         rc_san_pham = findViewById(R.id.rc_san_pham);
         img_btn_back = findViewById(R.id.img_btn_back);
         badge = findViewById(R.id.badge);
     }
 
-    public void loadSanPhamFromsever() {
-        for (int i = 0; i < 20; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, i + 1);
-            arrayListSanPham.add(sp);
+    public void getDataSanPham() {
+//        for (int i = 0; i < 20; i++) {
+//            SanPham sp = new SanPham("sp" + i, 5 + i * 10,url, 1, i + 1);
+//            arrayListSanPham.add(sp);
+//        }
+        // Set Title
+         title = getIntent().getStringExtra("LOAI");
+        txt_loai.setText(title);
+        if(title.equalsIgnoreCase("Món chính")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsMonChinh");
         }
+        if(title.equalsIgnoreCase("Món Ăn Vặt")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsMonVat");
+        }
+        if(title.equalsIgnoreCase("Thức uống")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsThucUong");
+        }
+        Collections.reverse(arrayListSanPham);
+        maSPCuoi=arrayListSanPham.get(arrayListSanPham.size()-1).getMaSP();
+        maSpDau=arrayListSanPham.get(0).getMaSP();
+//        Toast.makeText(this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
     }
 
     public void pulldownToRefresh() {
@@ -105,32 +135,53 @@ public class SanPhamActivity extends AppCompatActivity {
         swipe_refresh_layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (arrayListSanPham.size() <= 50) {
-//                    items.add(null);
-//                    adapter.notifyItemInserted(items.size()-1);
+//                if (arrayListSanPham.size() <= 50) {
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
+////                            items.remove(items.size()-1);
+////                            adapter.notifyItemRemoved(items.size());
+//                            //Random more data
+//                            int index = arrayListSanPham.size();
+//                            int end = index + 10;
+//                            for (int i = 0; i < 10; i++) {
+////                                String name = UUID.randomUUID().toString();
+//                                SanPham sanpham = new SanPham("sp" + i, 5 + i * 10, url, 1, i + 1);
+//                                arrayListSanPham.add(i, sanpham);
+//                            }
+//                            adapter.notifyDataSetChanged();
+////                            adapter.setLoaded();
+//                            swipe_refresh_layout.setRefreshing(false);
+//                        }
+//                    }, 2000);
+//                } else {
+//                    Toast.makeText(SanPhamActivity.this, "Load data completed!", Toast.LENGTH_SHORT).show();
+//                    swipe_refresh_layout.setRefreshing(false);
+//                }
+                if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
+                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
+                    PullDownloadDataDoAn(url);
+//                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
+                }
+                if(title.equalsIgnoreCase("Thức uống")){
+                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
+                    PullDownloadDataDoUong(url);
+                }
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
-//                            items.remove(items.size()-1);
-//                            adapter.notifyItemRemoved(items.size());
-                            //Random more data
-                            int index = arrayListSanPham.size();
-                            int end = index + 10;
-                            for (int i = 0; i < 10; i++) {
-//                                String name = UUID.randomUUID().toString();
-                                SanPham sanpham = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, i + 1);
-                                arrayListSanPham.add(i, sanpham);
+//                            Add more data
+                            for (int i = 0; i < arrayResponse.size(); i++) {
+                                arrayListSanPham.add(i, arrayResponse.get(i));
                             }
+                            maSpDau=arrayListSanPham.get(0).getMaSP();
                             adapter.notifyDataSetChanged();
-//                            adapter.setLoaded();
                             swipe_refresh_layout.setRefreshing(false);
                         }
                     }, 2000);
-                } else {
-                    Toast.makeText(SanPhamActivity.this, "Load data completed!", Toast.LENGTH_SHORT).show();
-                    swipe_refresh_layout.setRefreshing(false);
-                }
+
+
             }
         });
     }
@@ -139,42 +190,75 @@ public class SanPhamActivity extends AppCompatActivity {
         adapter.setLoadMore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-                if (arrayListSanPham.size() <= 50) {
-                    arrayListSanPham.add(null);
-                    arrayListSanPham.add(null);
-                    adapter.notifyItemInserted(arrayListSanPham.size() - 2);
-                    adapter.notifyItemInserted(arrayListSanPham.size() - 1);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
-                            arrayListSanPham.remove(arrayListSanPham.size() - 2);
-                            arrayListSanPham.remove(arrayListSanPham.size() - 1);
-                            adapter.notifyItemRemoved(arrayListSanPham.size());
-                            //Random more data
-                            int index = arrayListSanPham.size();
-                            int end = index + 10;
-                            for (int i = index; i < end; i++) {
-                                SanPham sanpham = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, i + 1);
-                                arrayListSanPham.add(i, sanpham);
-                            }
-                            adapter.notifyDataSetChanged();
-                            adapter.setLoaded();
+//                if (arrayListSanPham.size() <= 50) {
+//                    arrayListSanPham.add(null);
+//                    arrayListSanPham.add(null);
+//                    adapter.notifyItemInserted(arrayListSanPham.size() - 2);
+//                    adapter.notifyItemInserted(arrayListSanPham.size() - 1);
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
+//                            arrayListSanPham.remove(arrayListSanPham.size() - 2);
+//                            arrayListSanPham.remove(arrayListSanPham.size() - 1);
+//                            adapter.notifyItemRemoved(arrayListSanPham.size());
+//                            //Random more data
+//                            int index = arrayListSanPham.size();
+//                            int end = index + 10;
+//                            for (int i = index; i < end; i++) {
+//                                SanPham sanpham = new SanPham("sp" + i, 5 + i * 10,url, 1, i + 1);
+//                                arrayListSanPham.add(i, sanpham);
+//                            }
+//                            adapter.notifyDataSetChanged();
+//                            adapter.setLoaded();
+//                        }
+//                    }, 2000);
+//                } else {
+//                    Toast.makeText(SanPhamActivity.this, "Load data completed!", Toast.LENGTH_SHORT).show();
+//                }
+                    if(sizeOfArrayrespone!=0){
+                        arrayListSanPham.add(null);
+                        arrayListSanPham.add(null);
+                        adapter.notifyItemInserted(arrayListSanPham.size() - 2);
+                        adapter.notifyItemInserted(arrayListSanPham.size() - 1);
+                        if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
+                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+                            PullUploadDataDoAn(url);
+//                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
                         }
-                    }, 2000);
-                } else {
-                    Toast.makeText(SanPhamActivity.this, "Load data completed!", Toast.LENGTH_SHORT).show();
-                }
+                        if(title.equalsIgnoreCase("Thức uống")){
+                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+                            PullUploadDataDoUong(url);
+                        }
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
+                                arrayListSanPham.remove(arrayListSanPham.size() - 2);
+                                arrayListSanPham.remove(arrayListSanPham.size() - 1);
+                                adapter.notifyItemRemoved(arrayListSanPham.size());
+//                               Add more data
+                                arrayListSanPham.addAll(arrayResponse);
+                                maSPCuoi=arrayListSanPham.get(arrayListSanPham.size()-1).getMaSP();
+                                adapter.notifyDataSetChanged();
+                                adapter.setLoaded();
+                            }
+                        }, 3000);
+                    }else {
+                        Toast.makeText(SanPhamActivity.this, "Hết rồi", Toast.LENGTH_SHORT).show();
+                    }
+
+
             }
         });
     }
 
     public void loadGioHangFromsever() {
         arrayList_giohang = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            SanPham sp = new SanPham("sp" + i, 5 + i * 10, R.drawable.garan, 1, i + 1);
-            arrayList_giohang.add(sp);
-        }
+//        for (int i = 0; i < 20; i++) {
+//            SanPham sp = new SanPham("sp" + i, 5 + i * 10, url, 1, i + 1);
+//            arrayList_giohang.add(sp);
+//        }
     }
 
     public static void setNumberBadge(int size) {
@@ -235,6 +319,202 @@ public class SanPhamActivity extends AppCompatActivity {
         }
      return size;
     }
+    public void PullUploadDataDoAn(String url){
+        // Initialize a new RequestQueue instance
+        final RequestQueue requestQueue = Volley.newRequestQueue(SanPhamActivity.this);
 
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Process the JSON
+                        sizeOfArrayrespone=response.length();
+                        try{
+                            // Loop through the array elements
+                            arrayResponse.clear();
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject MonAn = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                int MaMa = MonAn.getInt("MaMA");
+                                String TenMA = MonAn.getString("TenMA");
+                                String GioiThieu = MonAn.getString("GioiThieu");
+                                int Dongia= MonAn.getInt("Dongia");
+                                String Anh = MonAn.getString("Anh");
+                                int maDM = MonAn.getInt("MaDM");
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
 
+                                arrayResponse.add(monAn);
+
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Log.d("BBB",error+"");
+                    }
+                }
+        );
+
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void PullUploadDataDoUong(String url){
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(SanPhamActivity.this);
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Process the JSON
+                        sizeOfArrayrespone=response.length();
+                        arrayResponse.clear();
+                        try{
+                            // Loop through the array elements
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject MonAn = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                int MaMa = MonAn.getInt("MaDU");
+                                String TenMA = MonAn.getString("TenDU");
+                                String GioiThieu = MonAn.getString("GioiThieu");
+                                int Dongia= MonAn.getInt("Dongia");
+                                String Anh = MonAn.getString("Anh");
+                                int maDM = MonAn.getInt("MaDM");
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+
+                                arrayResponse.add(monAn);
+
+                            }
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Log.d("BBB",error+"");
+                    }
+                }
+        );
+
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void PullDownloadDataDoAn(String url){
+        // Initialize a new RequestQueue instance
+        final RequestQueue requestQueue = Volley.newRequestQueue(SanPhamActivity.this);
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Process the JSON
+                        arrayResponse.clear();
+                        try{
+                            // Loop through the array elements
+                            arrayResponse.clear();
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject MonAn = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                int MaMa = MonAn.getInt("MaMA");
+                                String TenMA = MonAn.getString("TenMA");
+                                String GioiThieu = MonAn.getString("GioiThieu");
+                                int Dongia= MonAn.getInt("Dongia");
+                                String Anh = MonAn.getString("Anh");
+                                int maDM = MonAn.getInt("MaDM");
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+
+                                arrayResponse.add(monAn);
+
+                            }
+                            Collections.reverse(arrayResponse);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Log.d("BBB",error+"");
+                    }
+                }
+        );
+
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void PullDownloadDataDoUong(String url){
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(SanPhamActivity.this);
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Process the JSON
+                        arrayResponse.clear();
+                        try{
+                            // Loop through the array elements
+                            for(int i=0;i<response.length();i++){
+                                // Get current json object
+                                JSONObject MonAn = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                int MaMa = MonAn.getInt("MaDU");
+                                String TenMA = MonAn.getString("TenDU");
+                                String GioiThieu = MonAn.getString("GioiThieu");
+                                int Dongia= MonAn.getInt("Dongia");
+                                String Anh = MonAn.getString("Anh");
+                                int maDM = MonAn.getInt("MaDM");
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+
+                                arrayResponse.add(monAn);
+
+                            }
+                            Collections.reverse(arrayResponse);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Log.d("BBB",error+"");
+                    }
+                }
+        );
+
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+    }
 }
