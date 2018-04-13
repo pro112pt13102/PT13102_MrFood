@@ -55,12 +55,12 @@ public class GioHangActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // update 4/12/2018
-                if(arrayList_giohang.size()!=0){
+                if(arrayList_giohang.size()!=0 && getEditSoluong().trim().length()!=0){
                     updateSoluong( getEditSoluong());
+                    Log.d("AAA",getEditSoluong()+"");
                     tinhtong();
                 }
                 //
-                updateDataToSever();
                 sendBackArrayGioHangEditSanPhamActivity();
             }
         });
@@ -122,9 +122,7 @@ public class GioHangActivity extends AppCompatActivity {
             arrayList_giohang=arrayList;
 //        Log.d("AAA","size "+arrayList_giohang.size());
     }
-    public  void updateDataToSever(){
-        Toast.makeText(GioHangActivity.this, "đả gửi giỏ hàng lên sever", Toast.LENGTH_SHORT).show();
-    }
+
     public void sendBackArrayGioHangEditSanPhamActivity(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("arrayListEdit",arrayList_giohang);

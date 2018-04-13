@@ -2,6 +2,9 @@ package com.example.peter.project1.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,12 +21,14 @@ import com.example.peter.project1.Interface.ILoadMore;
 import com.example.peter.project1.Model.SanPham;
 import com.example.peter.project1.R;
 import com.eyalbira.loadingdots.LoadingDots;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 import static com.example.peter.project1.SanPhamActivity.Addgiohang;
+import static com.example.peter.project1.SanPhamActivity.getArrayListGiohang;
 
 /**
  * Created by daovip on 3/22/2018.
@@ -112,7 +117,7 @@ public class adaoter_rc_san_pham extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         size=getItemCount();
         if(holder instanceof  ItemViewHolder){
             final SanPham sp;
@@ -139,6 +144,16 @@ public class adaoter_rc_san_pham extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View view) {
                     // Add item to arraylisGioHang
                    Addgiohang(sp);
+                   //
+                   ArrayList<SanPham> arrayListGiohang= getArrayListGiohang();
+                   // Save gio hang
+                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(((ItemViewHolder) holder).btn_giohang_sanpham.getContext());
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(arrayListGiohang);
+                    editor.putString("arrayGioHang", json);
+                    editor.commit();
+
                }
           });
         }else if (holder instanceof LoadingViewHoder){
@@ -163,4 +178,5 @@ public class adaoter_rc_san_pham extends RecyclerView.Adapter<RecyclerView.ViewH
                 .resize(200,200)
                 .into(img);
     }
+
 }

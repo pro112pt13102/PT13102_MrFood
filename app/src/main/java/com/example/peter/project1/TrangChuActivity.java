@@ -52,6 +52,9 @@ public class TrangChuActivity extends AppCompatActivity {
     ArrayList<SanPham> arrayListMonChinh;
     ArrayList<SanPham> arrayListMonAnVat;
     ArrayList<SanPham> arrayListThucUong;
+    ArrayList<SanPham> arrayListComVanPhong;
+    ArrayList<SanPham> arrayListCafe;
+    ArrayList<SanPham> arrayListTraSua;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +108,9 @@ public class TrangChuActivity extends AppCompatActivity {
         arrayListMonAnVat=new ArrayList<>();
         arrayListMonChinh =new ArrayList<>();
         arrayListSanPhamSlideShow=new ArrayList<>();
+        arrayListCafe=new ArrayList<>();
+        arrayListComVanPhong=new ArrayList<>();
+        arrayListTraSua =new ArrayList<>();
         rc_MonChinh=findViewById(R.id.rc_mon_chinh);
         rc_Mon_Vat=findViewById(R.id.rc_mon_van_vat);
         rc_Thuc_uong=findViewById(R.id.rc_thuc_uong);
@@ -121,6 +127,9 @@ public class TrangChuActivity extends AppCompatActivity {
         arrayListMonAnVat= (ArrayList<SanPham>) getIntent().getSerializableExtra("MonVat");
         arrayListThucUong= (ArrayList<SanPham>) getIntent().getSerializableExtra("ThucUong");
         arrayListSanPhamSlideShow= (ArrayList<SanPham>) getIntent().getSerializableExtra("SlideShow");
+        arrayListComVanPhong= (ArrayList<SanPham>) getIntent().getSerializableExtra("ComVanPhong");
+        arrayListCafe= (ArrayList<SanPham>) getIntent().getSerializableExtra("Cafe");
+        arrayListTraSua= (ArrayList<SanPham>) getIntent().getSerializableExtra("TraSua");
     }
     public void setUpCircleIndicator(){
             FragmentPagerAdapter adapter= new AdapterSlideShow(getSupportFragmentManager(),arrayListSanPhamSlideShow);
@@ -136,31 +145,37 @@ public class TrangChuActivity extends AppCompatActivity {
                     case R.id.monchinh:
                         Intent i1 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i1.putExtra("LOAI","Món chính");
+                        i1.putExtra("DsMonChinh",arrayListMonChinh);
                         startActivity(i1);
                         break;
                     case R.id.monanvat:
                         Intent i2 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i2.putExtra("LOAI","Món Ăn Vặt");
+                        i2.putExtra("DsMonVat",arrayListMonAnVat);
                         startActivity(i2);
                         break;
                     case R.id.trasua:
                         Intent i3 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i3.putExtra("LOAI","Trà Sữa");
+                        i3.putExtra("TraSua",arrayListTraSua);
                         startActivity(i3);
                         break;
                     case R.id.cafe:
                         Intent i4 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i4.putExtra("LOAI","Cafe");
+                        i4.putExtra("Cafe",arrayListCafe);
                         startActivity(i4);
                         break;
                     case R.id.khac:
                         Intent i5 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
                         i5.putExtra("LOAI","Khác");
+                        i5.putExtra("ThucUong",arrayListThucUong);
                         startActivity(i5);
                         break;
                     case R.id.comvanphong:
                         Intent i6 = new Intent(TrangChuActivity.this,SanPhamActivity.class);
-                        i6.putExtra("LOAI","Khác");
+                        i6.putExtra("LOAI","Cơm văn phòng");
+                        i6.putExtra("ComVanPhong",arrayListComVanPhong);
                         startActivity(i6);
                         break;
                     case R.id.thoat:

@@ -14,6 +14,7 @@ public class SanPham implements Serializable{
     private int MaSP;
     private int MaDm;
     private String Gioithieu;
+    private String loai;
 
     public void setMaDm(int maDm) {
         MaDm = maDm;
@@ -32,6 +33,14 @@ public class SanPham implements Serializable{
         return Gioithieu;
     }
 
+    public String getLoai() {
+        return loai;
+    }
+
+    public void setLoai(String loai) {
+        this.loai = loai;
+    }
+
     public SanPham(String tenSanPha, int dongia, String hinh, int soluong, int maSP, int maDm, String gioithieu) {
         this.tenSanPha = tenSanPha;
         this.dongia = dongia;
@@ -40,6 +49,17 @@ public class SanPham implements Serializable{
         MaSP = maSP;
         MaDm = maDm;
         Gioithieu = gioithieu;
+    }
+
+    public SanPham(String tenSanPha, int dongia, String hinh, int soluong, int maSP, int maDm, String gioithieu, String loai) {
+        this.tenSanPha = tenSanPha;
+        this.dongia = dongia;
+        this.hinh = hinh;
+        this.soluong = soluong;
+        MaSP = maSP;
+        MaDm = maDm;
+        Gioithieu = gioithieu;
+        this.loai = loai;
     }
 
     public int getSoluong() {

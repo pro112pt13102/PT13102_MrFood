@@ -3,8 +3,10 @@ package com.example.peter.project1;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,11 +33,14 @@ import com.example.peter.project1.Adapter.adaoter_rc_san_pham;
 import com.example.peter.project1.CustomView.Badge;
 import com.example.peter.project1.Interface.ILoadMore;
 import com.example.peter.project1.Model.SanPham;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -50,11 +55,11 @@ public class SanPhamActivity extends AppCompatActivity {
     PullRefreshLayout swipe_refresh_layout;
     static ArrayList<SanPham> arrayList_giohang;
     TextView txt_loai;
-    String url ="http://immense-scrubland-98497.herokuapp.com/public/images/28.jpg";
     String title;
     int maSPCuoi;
     int maSpDau;
     int sizeOfArrayrespone=1;
+    int Madm;
     ArrayList<SanPham> arrayResponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,7 @@ public class SanPhamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_san_pham);
         Anhxa();
         getDataSanPham();
-        loadGioHangFromsever();
+        loadGioHang();
         setNumberBadge(CountSizeArray(arrayList_giohang));
 
         //set up recycleView
@@ -117,12 +122,31 @@ public class SanPhamActivity extends AppCompatActivity {
         txt_loai.setText(title);
         if(title.equalsIgnoreCase("Món chính")){
             arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsMonChinh");
+            Madm=1;
         }
         if(title.equalsIgnoreCase("Món Ăn Vặt")){
             arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsMonVat");
+            Madm=2;
         }
         if(title.equalsIgnoreCase("Thức uống")){
             arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("DsThucUong");
+            Madm=1;
+        }
+        if(title.equalsIgnoreCase("Khác")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("ThucUong");
+            Madm=1;
+        }
+        if(title.equalsIgnoreCase("Trà Sữa")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("TraSua");
+            Madm=3;
+        }
+        if(title.equalsIgnoreCase("Cafe")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("Cafe");
+            Madm=2;
+        }
+        if(title.equalsIgnoreCase("Cơm văn phòng")){
+            arrayListSanPham= (ArrayList<SanPham>) getIntent().getSerializableExtra("ComVanPhong");
+            Madm=3;
         }
         Collections.reverse(arrayListSanPham);
         maSPCuoi=arrayListSanPham.get(arrayListSanPham.size()-1).getMaSP();
@@ -159,15 +183,17 @@ public class SanPhamActivity extends AppCompatActivity {
 //                    Toast.makeText(SanPhamActivity.this, "Load data completed!", Toast.LENGTH_SHORT).show();
 //                    swipe_refresh_layout.setRefreshing(false);
 //                }
-                if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
-                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
-                    PullDownloadDataDoAn(url);
-//                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
-                }
-                if(title.equalsIgnoreCase("Thức uống")){
-                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
-                    PullDownloadDataDoUong(url);
-                }
+//                if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
+//                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
+//                    PullDownloadDataDoAn(url);
+////                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
+//                }
+//                if(title.equalsIgnoreCase("Thức uống")){
+//                    String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-lon-hon&ma="+maSpDau+"&soluong=6";
+//                    PullDownloadDataDoUong(url);
+//                }
+                setUrlRequestPullDown();
+                Log.d("AAA",maSpDau+"");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -221,19 +247,23 @@ public class SanPhamActivity extends AppCompatActivity {
                         arrayListSanPham.add(null);
                         adapter.notifyItemInserted(arrayListSanPham.size() - 2);
                         adapter.notifyItemInserted(arrayListSanPham.size() - 1);
-                        if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
-                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
-                            PullUploadDataDoAn(url);
-//                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
-                        }
-                        if(title.equalsIgnoreCase("Thức uống")){
-                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
-                            PullUploadDataDoUong(url);
-                        }
+                        //
+//                        if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")){
+//                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+//                            PullUploadDataDoAn(url);
+////                        Toast.makeText(SanPhamActivity.this, ""+maSPCuoi, Toast.LENGTH_SHORT).show();
+//                        }
+//                        if(title.equalsIgnoreCase("Thức uống")){
+//                            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+//                            PullUploadDataDoUong(url);
+//                        }
+                        //
+                        setUrlRequestPullUp();
+                        Log.d("111",maSPCuoi+"");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SanPhamActivity.this, "dang load", Toast.LENGTH_SHORT).show();
                                 arrayListSanPham.remove(arrayListSanPham.size() - 2);
                                 arrayListSanPham.remove(arrayListSanPham.size() - 1);
                                 adapter.notifyItemRemoved(arrayListSanPham.size());
@@ -245,20 +275,38 @@ public class SanPhamActivity extends AppCompatActivity {
                             }
                         }, 3000);
                     }else {
-                        Toast.makeText(SanPhamActivity.this, "Hết rồi", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SanPhamActivity.this, "Hết rồi", Toast.LENGTH_SHORT).show();
                     }
 
 
             }
         });
     }
+    public void SavegioHang(){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
 
-    public void loadGioHangFromsever() {
+        String json = gson.toJson(arrayList_giohang);
+
+        editor.putString("arrayGioHang", json);
+        editor.commit();
+    }
+
+    public void loadGioHang() {
         arrayList_giohang = new ArrayList<>();
 //        for (int i = 0; i < 20; i++) {
 //            SanPham sp = new SanPham("sp" + i, 5 + i * 10, url, 1, i + 1);
 //            arrayList_giohang.add(sp);
 //        }
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(SanPhamActivity.this);
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("arrayGioHang", null);
+        if(json!=null){
+            Type type = new TypeToken<ArrayList<SanPham>>() {}.getType();
+            arrayList_giohang = gson.fromJson(json, type);
+        }
+
     }
 
     public static void setNumberBadge(int size) {
@@ -296,7 +344,10 @@ public class SanPhamActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 arrayList_giohang = (ArrayList<SanPham>) data.getSerializableExtra("arrayListEdit");
-                setNumberBadge(CountSizeArray(arrayList_giohang));}
+                setNumberBadge(CountSizeArray(arrayList_giohang));
+                SavegioHang();
+            }
+            SavegioHang();
             if (resultCode == Activity.RESULT_CANCELED) {
             }
         }
@@ -346,7 +397,7 @@ public class SanPhamActivity extends AppCompatActivity {
                                 int Dongia= MonAn.getInt("Dongia");
                                 String Anh = MonAn.getString("Anh");
                                 int maDM = MonAn.getInt("MaDM");
-                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu,"DoAn");
 
                                 arrayResponse.add(monAn);
 
@@ -395,7 +446,7 @@ public class SanPhamActivity extends AppCompatActivity {
                                 int Dongia= MonAn.getInt("Dongia");
                                 String Anh = MonAn.getString("Anh");
                                 int maDM = MonAn.getInt("MaDM");
-                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu,"NuocUong");
 
                                 arrayResponse.add(monAn);
 
@@ -445,7 +496,7 @@ public class SanPhamActivity extends AppCompatActivity {
                                 int Dongia= MonAn.getInt("Dongia");
                                 String Anh = MonAn.getString("Anh");
                                 int maDM = MonAn.getInt("MaDM");
-                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu,"DoAn");
 
                                 arrayResponse.add(monAn);
 
@@ -494,7 +545,7 @@ public class SanPhamActivity extends AppCompatActivity {
                                 int Dongia= MonAn.getInt("Dongia");
                                 String Anh = MonAn.getString("Anh");
                                 int maDM = MonAn.getInt("MaDM");
-                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu);
+                                SanPham monAn = new SanPham(TenMA,Dongia,Anh,1,MaMa,maDM,GioiThieu,"NuocUong");
 
                                 arrayResponse.add(monAn);
 
@@ -516,5 +567,32 @@ public class SanPhamActivity extends AppCompatActivity {
 
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
+    }
+    public void setUrlRequestPullUp(){
+        if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")||title.equalsIgnoreCase("Cơm văn phòng")){
+//            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+            String url="http://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-theo-ma-loai-co-ma-nho-hon&maloai="+Madm+"&ma="+maSPCuoi+"&soluong=6";
+            PullUploadDataDoAn(url);
+        }
+        if(title.equalsIgnoreCase("Thức uống")|| title.equalsIgnoreCase("Trà Sữa")||title.equalsIgnoreCase("Cafe")){
+//            String url ="https://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-co-ma-nho-hon&ma="+maSPCuoi+"&soluong=6";
+            String url="http://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-theo-ma-loai-co-ma-nho-hon&maloai="+Madm+"&ma="+maSPCuoi+"&soluong=6";
+
+            PullUploadDataDoUong(url);
+        }
+    }
+    public void setUrlRequestPullDown(){
+        if(title.equalsIgnoreCase("Món chính") || title.equalsIgnoreCase("Món Ăn Vặt")||title.equalsIgnoreCase("Cơm văn phòng")){
+            String url="http://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-mon-an-theo-ma-loai-co-ma-lon-hon&maloai="+Madm+"&ma="+maSpDau+"&soluong=6";
+            PullDownloadDataDoAn(url);
+        }
+        if(title.equalsIgnoreCase("Thức uống")|| title.equalsIgnoreCase("Trà Sữa")||title.equalsIgnoreCase("Cafe")){
+            String url="http://immense-scrubland-98497.herokuapp.com/app.php?kihieu=danh-sach-thuc-uong-theo-ma-loai-co-ma-lon-hon&maloai="+Madm+"&ma="+maSpDau+"&soluong=6";
+
+            PullDownloadDataDoUong(url);
+        }
+    }
+    public static ArrayList<SanPham> getArrayListGiohang(){
+        return arrayList_giohang;
     }
 }
